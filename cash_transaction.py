@@ -286,20 +286,15 @@ def show_record_transaction():
     # ── Order Details (Read-only) ──
     st.divider()
     st.markdown("#### 📦 Order Details")
-    d1, d2, d3 = st.columns(3)
-    d1.metric("Invoice Amount (₹)", f"₹{selected['InvoiceAmount']:,.2f}")
-    d2.metric("UPI / Wallet Amount (₹)",
-              f"₹{selected['UPIAmount']:,.2f}" if pd.notna(selected["UPIAmount"]) and selected["UPIAmount"] else "₹0.00",
-              help="System auto-populated — not editable")
-    d3.metric("Cash Amount (₹)", f"₹{selected['CashAmount']:,.2f}",
-              help="System auto-populated — not editable")
-
-    d4, d5, d6 = st.columns(3)
-    d4.metric("Total Paid So Far (₹)", f"₹{selected['TotalPaid']:,.2f}")
-    d5.metric("Pending Amount (₹)",    f"₹{selected['PendingAmount']:,.2f}",
+    d1, d2, d3, d4, d5, d6 = st.columns(6)
+    d1.metric("Invoice (₹)",      f"₹{selected['InvoiceAmount']:,.2f}")
+    d2.metric("UPI/Wallet (₹)",   f"₹{selected['UPIAmount']:,.2f}" if pd.notna(selected["UPIAmount"]) and selected["UPIAmount"] else "₹0.00")
+    d3.metric("Cash (₹)",         f"₹{selected['CashAmount']:,.2f}")
+    d4.metric("Paid So Far (₹)",  f"₹{selected['TotalPaid']:,.2f}")
+    d5.metric("Pending (₹)",      f"₹{selected['PendingAmount']:,.2f}",
               delta=f"-₹{selected['TotalPaid']:,.2f}" if selected["TotalPaid"] > 0 else None,
               delta_color="inverse")
-    d6.metric("Transaction #",         int(selected["TransactionCount"]) + 1)
+    d6.metric("Txn #",            int(selected["TransactionCount"]) + 1)
 
     # ── Existing Transactions ──
     existing_txns = get_transactions_for_order(selected_order_id)
